@@ -1,0 +1,89 @@
+<%- include('../partials/head') %>
+
+    </head>
+
+    <body class="bg-gray-50 min-h-screen">
+
+        <%- include('../partials/Nav') %>
+
+            <main class="max-w-7xl mx-auto px-6 py-10">
+
+                <div class="mb-10">
+                    <h1 class="text-4xl font-bold text-gray-900">My Bookings</h1>
+                    <p class="text-gray-500 mt-2">
+                        Your upcoming stays and travel plans.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+                    <% for(let i=0;i<3;i++){ %>
+
+                        <div class="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition">
+
+                            <img src="https://picsum.photos/600/400?random=<%= i+1 %>" class="w-full h-60 object-cover">
+
+                            <div class="p-6">
+
+                                <div class="flex justify-between items-start">
+
+                                    <div>
+                                        <h2 class="text-2xl font-bold">
+                                            Luxury Villa
+                                        </h2>
+
+                                        <p class="text-gray-500 mt-1">
+                                            📍 Goa, India
+                                        </p>
+                                    </div>
+
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                                        Upcoming
+                                    </span>
+
+                                </div>
+
+                                <div class="mt-6 space-y-3">
+
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Check In</span>
+                                        <span>10 Jul 2026</span>
+                                    </div>
+
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Check Out</span>
+                                        <span>14 Jul 2026</span>
+                                    </div>
+
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Guests</span>
+                                        <span>2 Adults</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="mt-6 border-t pt-5 flex justify-between items-center">
+
+                                    <h3 class="text-2xl font-bold text-[#FF385C]">
+                                        ₹12,500
+                                    </h3>
+
+                                    <button class="bg-[#FF385C] text-white px-5 py-2 rounded-xl hover:bg-[#e03150]">
+                                        View
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <% } %>
+
+                </div>
+
+            </main>
+
+    </body>
+
+    </html>

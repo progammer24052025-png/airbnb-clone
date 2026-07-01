@@ -1,0 +1,114 @@
+<header class="border-b border-gray-200 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+        <!-- Logo -->
+        <h1 class="text-2xl sm:text-3xl font-bold text-[#FF385C]">
+            <a href="/">airbnb</a>
+        </h1>
+
+        <!-- Hamburger Button (mobile only) -->
+        <button id="menu-toggle"
+            class="md:hidden flex flex-col items-center justify-center w-10 h-10 rounded-lg border border-gray-300 hover:bg-gray-100 transition">
+            <span class="block w-5 h-0.5 bg-gray-700 mb-1"></span>
+            <span class="block w-5 h-0.5 bg-gray-700 mb-1"></span>
+            <span class="block w-5 h-0.5 bg-gray-700"></span>
+        </button>
+
+        <!-- Desktop Navigation (hidden on mobile) -->
+        <nav class="hidden md:block">
+            <ul class="flex items-center gap-1">
+                <li>
+                    <a href="/"
+                        class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+                        <%= currentPage === 'index' ? 'text-[#FF385C] bg-[#FF385C]/10' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100' %>">
+                        Index
+                    </a>
+                </li>
+                <li>
+                    <a href="/home-list"
+                        class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+                        <%= currentPage === 'home-list' ? 'text-[#FF385C] bg-[#FF385C]/10' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100' %>">
+                        Homes
+                    </a>
+                </li>
+                <li>
+                    <a href="/bookings"
+                        class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+                        <%= currentPage === 'bookings' ? 'text-[#FF385C] bg-[#FF385C]/10' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100' %>">
+                        Bookings
+                    </a>
+                </li>
+                <li>
+                    <a href="/favourite-list"
+                        class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+                        <%= currentPage === 'favourites' ? 'text-[#FF385C] bg-[#FF385C]/10' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100' %>">
+                        Favourites
+                    </a>
+                </li>
+                <li class="ml-2">
+                    <a href="/host/add-home" class="text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md
+                        <%= currentPage === 'Add-Home' ? 'bg-[#e03150]' : 'bg-[#FF385C] hover:bg-[#e03150]' %>">
+                        Add Home
+                    </a>
+                </li>
+                <li class="ml-2">
+                    <a href="/host/host-home-list" class="block text-center text-white px-5 py-3 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm
+                    <%= currentPage === 'host-home-list' ? 'bg-[#e03150]' : 'bg-[#FF385C] hover:bg-[#e03150]' %>">
+                        Manage Your Homes
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Mobile Navigation (hidden by default, toggled via JS) -->
+    <nav id="mobile-menu" class="hidden md:hidden border-t border-gray-100">
+        <ul class="flex flex-col px-4 py-3 gap-1">
+            <li>
+                <a href="/"
+                    class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+                        <%= currentPage === 'index' ? 'text-[#FF385C] bg-[#FF385C]/10' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100' %>">
+                    Index
+                </a>
+            </li>
+            <li>
+                <a href="/home-list"
+                    class="block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200
+                    <%= currentPage === 'home' ? 'text-[#FF385C] bg-[#FF385C]/10' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100' %>">
+                    Homes
+                </a>
+            </li>
+            <li>
+                <a href="/bookings"
+                    class="block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200
+                    <%= currentPage === 'bookings' ? 'text-[#FF385C] bg-[#FF385C]/10' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100' %>">
+                    Bookings
+                </a>
+            </li>
+            <li>
+                <a href="/favourite-list"
+                    class="block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200
+                    <%= currentPage === 'favourites' ? 'text-[#FF385C] bg-[#FF385C]/10' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100' %>">
+                    Favourites
+                </a>
+            </li>
+            <li class="mt-1">
+                <a href="/host/add-home" class="block text-center text-white px-5 py-3 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm
+                    <%= currentPage === 'Add-Home' ? 'bg-[#e03150]' : 'bg-[#FF385C] hover:bg-[#e03150]' %>">
+                    Add Home
+                </a>
+            </li>
+            <li class="mt-1">
+                <a href="/host/host-home-list" class="block text-center text-white px-5 py-3 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm
+                    <%= currentPage === 'host-home-list' ? 'bg-[#e03150]' : 'bg-[#FF385C] hover:bg-[#e03150]' %>">
+                    Manage Your Homes
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<script>
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+        document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+</script>

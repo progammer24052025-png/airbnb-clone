@@ -1,0 +1,185 @@
+<%- include('../partials/head') %> </head>
+
+    <body class="bg-gray-50 min-h-screen"> <%- include('../partials/Nav') %>
+            <main> <!-- ================= HERO ================= -->
+                <section
+                    class="relative bg-gradient-to-r from-[#FF385C] via-[#FF5A5F] to-[#FC642D] text-white overflow-hidden">
+                    <div class="absolute inset-0 bg-black/20"></div>
+                    <div class="relative max-w-7xl mx-auto px-6 py-24 lg:py-36 flex flex-col items-center text-center">
+                        <h1 class="text-5xl md:text-7xl font-extrabold leading-tight"> Find your <span
+                                class="text-yellow-200"> dream stay </span> </h1>
+                        <p class="mt-6 text-lg md:text-xl max-w-3xl text-gray-100"> Explore unique villas, apartments,
+                            beach houses and luxury stays around the world. </p> <!-- Search Box -->
+                        <div
+                            class="mt-12 bg-white rounded-full shadow-2xl p-3 flex flex-col md:flex-row w-full max-w-5xl">
+                            <input type="text" placeholder="Where are you going?"
+                                class="flex-1 px-6 py-4 rounded-full outline-none text-gray-700">
+                        </div>
+                        <button class="bg-[#FF385C] px-8 py-4 rounded-full font-semibold hover:bg-[#E61E4D] transition">
+                            Search </button>
+                    </div>
+                </section> <!-- ================= CATEGORIES ================= -->
+                <section class="max-w-7xl mx-auto px-6 py-16">
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="text-3xl font-bold"> Explore Categories </h2>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div
+                            class="bg-white rounded-3xl p-8 shadow hover:shadow-xl transition text-center cursor-pointer">
+                            <div class="text-5xl mb-4">🏖️</div>
+                            <h3 class="font-bold text-lg"> Beach </h3>
+                        </div>
+                        <div
+                            class="bg-white rounded-3xl p-8 shadow hover:shadow-xl transition text-center cursor-pointer">
+                            <div class="text-5xl mb-4">🏔️</div>
+                            <h3 class="font-bold text-lg"> Mountains </h3>
+                        </div>
+                        <div
+                            class="bg-white rounded-3xl p-8 shadow hover:shadow-xl transition text-center cursor-pointer">
+                            <div class="text-5xl mb-4">🏡</div>
+                            <h3 class="font-bold text-lg"> Villas </h3>
+                        </div>
+                        <div
+                            class="bg-white rounded-3xl p-8 shadow hover:shadow-xl transition text-center cursor-pointer">
+                            <div class="text-5xl mb-4">🏙️</div>
+                            <h3 class="font-bold text-lg"> City </h3>
+                        </div>
+                    </div>
+                </section> <!-- ================= TOP RATED HOMES ================= -->
+                <section class="max-w-7xl mx-auto px-6 pb-20">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 class="text-4xl font-bold text-gray-900"> ⭐ Top Rated Homes </h2>
+                            <p class="text-gray-500 mt-2"> Only homes rated above 4 stars. </p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                        <% RegisteredHomes.filter(house=> Number(house.rating) > 4) .forEach(house=> { %> <div
+                                class="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-500">
+                                <div class="relative overflow-hidden"> <img src="<%= house.image_url %>"
+                                        alt="<%= house.house_name %>"
+                                        class="w-full h-72 object-cover group-hover:scale-110 transition duration-700">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent"></div>
+                                    <span
+                                        class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full font-semibold shadow">
+                                        ⭐ <%= house.rating %> </span>
+
+                                    <%- include('../partials/favourite', { house: house }) %>
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-bold text-xl text-gray-900">
+                                                <%= house.house_name %>
+                                            </h3>
+                                            <p class="text-gray-500 mt-2"> 📍 <%= house.location %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-400 mt-4 line-clamp-2">
+                                        <%= house.description %>
+                                    </p>
+                                    <div class="mt-6 flex justify-between items-center">
+                                        <div> <span class="text-2xl font-bold"> ₹ <%= house.price %> </span> <span
+                                                class="text-gray-500"> /night </span> </div> <span
+                                            class="text-green-600 font-semibold"> Available </span>
+                                    </div>
+                                    <div class="mt-6 flex gap-3"> <a href="/reserve/<%= house.id %>"
+                                            class="flex-1 bg-[#FF385C] text-white py-3 rounded-xl text-center hover:bg-[#E61E4D]">
+                                            Book </a> <a href="/homes/<%= house.id %>"
+                                            class="flex-1 border border-gray-300 py-3 rounded-xl text-center hover:bg-gray-100">
+                                            View </a> </div>
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
+                    <% if(RegisteredHomes.filter(house=> Number(house.rating) > 4).length === 0){ %> <div
+                            class="mt-12 bg-white rounded-3xl border-2 border-dashed border-gray-200 py-20 flex flex-col items-center">
+                            <div class="text-7xl mb-5">🏠</div>
+                            <h2 class="text-3xl font-bold text-gray-900"> No Top Rated Homes Yet </h2>
+                            <p class="text-gray-500 mt-3"> Once hosts receive ratings above 4 stars, they'll appear
+                                here. </p> <a href="/host/add-home"
+                                class="mt-8 bg-[#FF385C] text-white px-8 py-4 rounded-xl hover:bg-[#E61E4D] transition">
+                                Become First Host </a>
+                        </div>
+                        <% } %>
+                </section> <!-- ================= WHY CHOOSE US ================= -->
+                <section class="bg-white py-20">
+                    <div class="max-w-7xl mx-auto px-6">
+                        <div class="text-center mb-14">
+                            <h2 class="text-4xl font-bold"> Why Choose Us? </h2>
+                            <p class="text-gray-500 mt-3"> Everything you need for a memorable stay. </p>
+                        </div>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div class="bg-gray-50 rounded-3xl p-8 text-center hover:shadow-xl transition">
+                                <div class="text-5xl mb-5">🏡</div>
+                                <h3 class="font-bold text-xl mb-3"> Verified Homes </h3>
+                                <p class="text-gray-500"> Every property is verified before being listed. </p>
+                            </div>
+                            <div class="bg-gray-50 rounded-3xl p-8 text-center hover:shadow-xl transition">
+                                <div class="text-5xl mb-5">💳</div>
+                                <h3 class="font-bold text-xl mb-3"> Secure Payments </h3>
+                                <p class="text-gray-500"> Safe and secure online booking experience. </p>
+                            </div>
+                            <div class="bg-gray-50 rounded-3xl p-8 text-center hover:shadow-xl transition">
+                                <div class="text-5xl mb-5">⭐</div>
+                                <h3 class="font-bold text-xl mb-3"> Top Rated Hosts </h3>
+                                <p class="text-gray-500"> Stay with trusted hosts loved by travelers. </p>
+                            </div>
+                            <div class="bg-gray-50 rounded-3xl p-8 text-center hover:shadow-xl transition">
+                                <div class="text-5xl mb-5">🛎️</div>
+                                <h3 class="font-bold text-xl mb-3"> 24×7 Support </h3>
+                                <p class="text-gray-500"> Our team is always here to help you. </p>
+                            </div>
+                        </div>
+                    </div>
+                </section> <!-- ================= STATS ================= -->
+                <section class="max-w-7xl mx-auto px-6 py-20">
+                    <div class="bg-gradient-to-r from-[#FF385C] to-[#FC642D] rounded-[40px] text-white p-12">
+                        <div class="grid md:grid-cols-4 gap-10 text-center">
+                            <div>
+                                <h2 class="text-5xl font-bold"> 500+ </h2>
+                                <p class="mt-3"> Luxury Homes </p>
+                            </div>
+                            <div>
+                                <h2 class="text-5xl font-bold"> 20K+ </h2>
+                                <p class="mt-3"> Happy Guests </p>
+                            </div>
+                            <div>
+                                <h2 class="text-5xl font-bold"> 100+ </h2>
+                                <p class="mt-3"> Cities </p>
+                            </div>
+                            <div>
+                                <h2 class="text-5xl font-bold"> 4.9★ </h2>
+                                <p class="mt-3"> Average Rating </p>
+                            </div>
+                        </div>
+                    </div>
+                </section> <!-- ================= HOST CTA ================= -->
+                <section class="max-w-7xl mx-auto px-6 pb-24">
+                    <div class="bg-black rounded-[40px] text-white p-16 text-center">
+                        <h2 class="text-5xl font-bold"> Become a Host </h2>
+                        <p class="text-gray-300 mt-6 text-lg max-w-3xl mx-auto"> Share your space, welcome travelers
+                            from around the world, and earn extra income while doing it. </p> <a href="/host/add-home"
+                            class="inline-block mt-10 bg-[#FF385C] px-10 py-4 rounded-full text-lg font-semibold hover:bg-[#E61E4D] transition">
+                            Start Hosting </a>
+                    </div>
+                </section>
+            </main> <!-- ================= FOOTER ================= -->
+            <footer class="bg-white border-t">
+                <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-center">
+                    <div>
+                        <h2 class="font-bold text-2xl text-[#FF385C]"> Airbnb Clone </h2>
+                        <p class="text-gray-500 mt-2"> Find unique places to stay and unforgettable experiences. </p>
+                    </div>
+                    <div class="flex gap-8 mt-6 md:mt-0 text-gray-600"> <a href="#" class="hover:text-[#FF385C]"> About
+                        </a> <a href="#" class="hover:text-[#FF385C]"> Homes </a> <a href="#"
+                            class="hover:text-[#FF385C]"> Contact </a> <a href="#" class="hover:text-[#FF385C]"> Privacy
+                        </a> </div>
+                </div>
+                <div class="border-t py-6 text-center text-gray-500"> © 2026 Airbnb Clone. Built with ❤️ using Node.js,
+                    Express, MongoDB & Tailwind CSS. </div>
+            </footer>
+    </body>
+
+    </html>

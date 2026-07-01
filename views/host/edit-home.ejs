@@ -1,0 +1,209 @@
+<%- include('../partials/head') %>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    </head>
+
+    <body class="bg-[#f7f7f7] min-h-screen">
+
+        <%- include('../partials/Nav') %>
+
+            <main class="flex justify-center px-6 pb-16">
+                <form action="/host/<%= editing ? 'edit-home' : 'add-home' %>" method="POST"
+                    class="w-full max-w-2xl bg-white rounded-[32px] border border-gray-200 shadow-[0_12px_40px_rgba(0,0,0,0.08)] p-10 md:p-12">
+                    <input type="hidden" name="id" value="<%= editing ? home.id : '' %>">
+                    <!-- Form Header -->
+                    <div class="mb-10 text-center">
+                        <% if(editing){%>
+                            <h2 class="text-3xl font-semibold text-gray-900">Update Your Home</h2><br>
+                            <%}else{%>
+                                <h2 class="text-3xl font-semibold text-gray-900">Create a New Listing</h2><br>
+                                <p class="mt-3 text-gray-500">Tell guests about your property</p>
+                                <%}%>
+                    </div>
+
+                    <div class="space-y-6">
+
+                        <!-- House Name -->
+                        <div
+                            class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <label class="block text-sm font-semibold text-gray-900 mb-3">House Name</label>
+                            <input type="text" name="house_name" placeholder="Enter House Name"
+                                value="<%= editing ? home.house_name : '' %>" required
+                                class="w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-[#FF385C] focus:ring-4 focus:ring-[#FF385C]/10 outline-none transition-all duration-200">
+                        </div><br>
+
+                        <!-- Description -->
+                        <div
+                            class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <label class="block text-sm font-semibold text-gray-900 mb-3">Description</label>
+                            <input type="text" name="description" placeholder="Enter Description"
+                                value="<%= editing ? home.description : '' %>" required
+                                class="w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-[#FF385C] focus:ring-4 focus:ring-[#FF385C]/10 outline-none transition-all duration-200">
+                        </div><br>
+
+                        <!-- Location -->
+                        <div
+                            class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <label class="block text-sm font-semibold text-gray-900 mb-3">Location</label>
+                            <div class="flex gap-2">
+                                <input type="text" name="location" id="locationInput" placeholder="Enter Location"
+                                    value="<%= editing ? home.location : '' %>" required
+                                    class="w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-[#FF385C] focus:ring-4 focus:ring-[#FF385C]/10 outline-none transition-all duration-200">
+                                <!-- <button type="button" onclick="searchLocation()"
+                                    class="flex-shrink-0 h-14 px-4 bg-[#FF385C] text-white text-sm font-semibold rounded-xl hover:bg-[#e03150] transition">
+                                    Search
+                                </button> -->
+                            </div>
+                        </div><br>
+
+                        <!-- Map Picker -->
+                        <!-- <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+                            <label class="block text-sm font-semibold text-gray-900 mb-1">Pin Location on Map</label>
+                            <p class="text-xs text-gray-400 mb-3">Click anywhere on the map to set coordinates, or use
+                                Search above.</p>
+                            <div id="map" class="w-full rounded-xl overflow-hidden" style="height:280px;z-index:0">
+                            </div>
+                            <p id="map-hint" class="text-xs text-gray-400 mt-2 text-center">No pin placed yet</p>
+                        </div><br> -->
+
+                        <!-- Lat / Lng (hidden but submitted) -->
+                        <!-- <div
+                            class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <label class="block text-sm font-semibold text-gray-900 mb-3">Coordinates</label>
+                            <div class="flex gap-3">
+                                <div class="flex-1">
+                                    <label class="block text-xs text-gray-500 mb-1">Latitude</label>
+                                    <input type="number" name="lat" id="latInput" placeholder="e.g. 23.0225" step="any"
+                                        required
+                                        class="w-full h-12 px-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-[#FF385C] focus:ring-4 focus:ring-[#FF385C]/10 outline-none transition-all duration-200">
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block text-xs text-gray-500 mb-1">Longitude</label>
+                                    <input type="number" name="lng" id="lngInput" placeholder="e.g. 72.5714" step="any"
+                                        required
+                                        class="w-full h-12 px-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-[#FF385C] focus:ring-4 focus:ring-[#FF385C]/10 outline-none transition-all duration-200">
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-2">These fill automatically when you click the map or
+                                search.</p>
+                        </div><br> -->
+
+                        <!-- Category -->
+                        <div
+                            class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <label class="block text-sm font-semibold text-gray-900 mb-3">Category</label>
+                            <select name="category"
+                                class="w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:bg-white focus:border-[#FF385C] focus:ring-4 focus:ring-[#FF385C]/10 outline-none transition-all duration-200">
+                                <option selected value="">
+                                    <%= editing ? home.category : 'Select Category' %>
+                                </option>
+                                <option value="Beach">Beach</option>
+                                <option value="Mountain">Mountain</option>
+                                <option value="Villa">Villa</option>
+                                <option value="City">City</option>
+                            </select>
+                        </div><br>
+
+                        <!-- Price -->
+                        <div
+                            class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <label class="block text-sm font-semibold text-gray-900 mb-3">Price</label>
+                            <input type="text" name="price" placeholder="Enter Price"
+                                value="<%= editing ? home.price : '' %>" required
+                                class="w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-[#FF385C] focus:ring-4 focus:ring-[#FF385C]/10 outline-none transition-all duration-200">
+                        </div><br>
+
+                        <!-- Image URL -->
+                        <div
+                            class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <label class="block text-sm font-semibold text-gray-900 mb-3">Image URL</label>
+                            <input type="url" name="image_url"
+                                placeholder="Enter Image URL (e.g. https://images.unsplash.com/...)"
+                                value="<%= editing ? home.image_url : '' %>" required
+                                class="w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-[#FF385C] focus:ring-4 focus:ring-[#FF385C]/10 outline-none transition-all duration-200">
+                        </div><br>
+
+                        <!-- Rating -->
+                        <div
+                            class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <label class="block text-sm font-semibold text-gray-900 mb-3">Rating (1-5)</label>
+                            <input type="number" name="rating" placeholder="Enter Rating (e.g. 4.5)" min="1" max="5"
+                                step="0.1" value="<%= editing ? home.rating : '' %>" required
+                                class="w-full h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-[#FF385C] focus:ring-4 focus:ring-[#FF385C]/10 outline-none transition-all duration-200">
+                        </div><br>
+
+                        <!-- Submit -->
+                        <div>
+                            <% if(editing){%>
+                                <button type="submit"
+                                    class="bg-[#FF385C] text-white px-5 py-2.5 rounded-full font-medium hover:bg-[#e03150] transition">
+                                    Update Home
+                                </button>
+                                <%}else{%>
+                                    <button type="submit"
+                                        class="bg-[#FF385C] text-white px-5 py-2.5 rounded-full font-medium hover:bg-[#e03150] transition">
+                                        Add Home
+                                    </button>
+                                    <%}%>
+                        </div>
+
+                    </div>
+                </form>
+            </main>
+
+            <!-- fillOpacity: 1
+                    }).addTo(map);
+                    document.getElementById('latInput').value = lat.toFixed(6);
+                    document.getElementById('lngInput').value = lng.toFixed(6);
+                    document.getElementById('map-hint').textContent = `📍 ${lat.toFixed(5)}, ${lng.toFixed(5)}`; -->
+            <!-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+            <script>
+                const map = L.map('map').setView([20.5937, 78.9629], 5); // Default: India
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+                let marker = null;
+
+                function placeMarker(lat, lng) {
+                    if (marker) map.removeLayer(marker);
+                    marker = L.circleMarker([lat, lng], {
+                        radius: 12,
+                        fillColor: '#FF385C',
+                        color: '#fff',
+                        weight: 3,
+               }
+
+                // Click map to pin
+                map.on('click', function (e) {
+                    placeMarker(e.latlng.lat, e.latlng.lng);
+                });
+
+                // Search location text → geocode via Nominatim
+                async function searchLocation() {
+                    const query = document.getElementById('locationInput').value.trim();
+                    if (!query) return alert('Enter a location first.');
+
+                    const res = await fetch(
+                        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`,
+                        { headers: { 'User-Agent': 'MyAirbnbApp/1.0' } }
+                    );
+                    const data = await res.json();
+
+                    if (!data.length) return alert('Location not found. Try a more specific name.');
+
+                    const lat = parseFloat(data[0].lat);
+                    const lng = parseFloat(data[0].lon);
+                    map.setView([lat, lng], 13);
+                    placeMarker(lat, lng);
+                }
+
+                // Also trigger search when Enter is pressed in location input
+                document.getElementById('locationInput').addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') { e.preventDefault(); searchLocation(); }
+                });
+            </script> -->
+
+    </body>
+
+    </html>

@@ -1,0 +1,100 @@
+<%- include('../partials/head') %>
+
+    </head>
+
+    <body class="bg-white min-h-screen">
+
+        <%- include('../partials/Nav') %>
+
+            <!-- Hero Section -->
+            <main class="max-w-7xl mx-auto px-6 pb-20">
+                <section class="flex flex-col items-center justify-center text-center py-20 md:py-32">
+
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
+                        Your Hosted Homes
+                    </h2>
+
+                    <p class="text-xl text-gray-600 max-w-2xl mb-10">
+                        Host unique homes, apartments, and experiences around the world.
+                    </p>
+
+                    <a href="/host/add-home"
+                        class="bg-[#FF385C] text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-sm hover:shadow-md hover:bg-[#e03150] transition-all">
+                        Add New Home
+                    </a>
+
+                </section>
+
+                <section class="pt-8 border-t border-gray-200">
+                    <h3 class="text-2xl font-bold text-red-500 mb-8">Your Hosted Homes</h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <% RegisteredHomes.forEach(house=> { %>
+                            <div
+                                class="group cursor-pointer flex flex-col bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow duration-300">
+
+                                <!-- Image -->
+                                <div class="relative w-full overflow-hidden" style="height: 200px;">
+                                    <img src="<%= house.image_url %>" alt="<%= house.house_name %>"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <!-- Rating Badge -->
+                                    <span
+                                        class="absolute top-2 right-2 bg-white text-gray-800 text-xs font-semibold px-2 py-1 rounded flex items-center gap-1 shadow">
+                                        ⭐ <%= house.rating || '4.5' %>
+                                    </span>
+                                </div>
+
+                                <!-- Card Body -->
+                                <div class="p-4 flex flex-col flex-1">
+                                    <h3 class="text-base font-bold text-gray-900 truncate mb-1">
+                                        <%= house.house_name %>
+                                    </h3>
+                                    <p class="text-sm text-gray-500 mb-1">📍 <%= house.location %>
+                                    </p>
+                                    <p class="text-sm text-gray-400 line-clamp-2 mb-4">
+                                        <%= house.description || 'A beautiful place to stay.' %>
+                                    </p>
+                                    <div
+                                        class="mt-auto border-t border-gray-100 pt-3 flex items-center justify-between">
+                                        <p class="text-gray-900 font-bold text-base">₹ <%= house.price || '100' %> <span
+                                                    class="text-gray-400 font-normal text-xs">/night</span></p>
+                                        <p>
+                                            <span
+                                                class="text-xs text-[#FF385C] font-semibold border border-[#FF385C] px-2 py-1 rounded"><a
+                                                    href="/host/edit-home/<%- house.id %>?editing=true">Edit</a></span>
+                                        </p>
+                                        <form action="/host/delete-home" method="post">
+                                            <input type="hidden" name="id" value="<%- house.id %>">
+                                            <button type="submit"><span
+                                                    class="text-xs text-[#FF385C] font-semibold border border-[#FF385C] px-2 py-1 rounded">Delete</span></button>
+
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <% }) %>
+                    </div>
+
+
+                    <% if(RegisteredHomes.length===0) { %>
+                        <div
+                            class="w-full flex flex-col items-center justify-center py-20 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 mt-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-12 h-12 text-gray-400 mb-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                            </svg>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-1">No homes registered yet</h3>
+                            <p class="text-gray-500 mb-6">Be the first to list your property on Airbnb!</p>
+                            <a href="/host/add-home"
+                                class="bg-[#FF385C] text-white px-5 py-2.5 rounded-full font-medium shadow-sm hover:shadow-md hover:bg-[#e03150] transition-all">Add
+                                a home</a>
+                        </div>
+                        <% } %>
+                </section>
+            </main>
+
+    </body>
+
+    </html>

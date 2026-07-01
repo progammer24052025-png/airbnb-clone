@@ -1,0 +1,220 @@
+<%- include('../partials/head') %>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    </head>
+
+    <body style="background:#fff;font-family:'Plus Jakarta Sans',sans-serif;color:#222;margin:0">
+
+        <%- include('../partials/Nav') %>
+
+            <main style="max-width:1120px;margin:0 auto;padding:24px 24px 60px">
+
+                <!-- Photo Grid -->
+                <div style="position:relative">
+                    <div
+                        style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:320px 160px;gap:8px;border-radius:16px;overflow:hidden">
+                        <img src="<%= home.image_url %>" alt="<%= home.house_name %>"
+                            style="grid-row:1/3;width:100%;height:100%;object-fit:cover">
+                        <!-- Add extra images if available, or repeat with different crops -->
+                        <img src="<%= home.image_url %>" alt=""
+                            style="width:100%;height:100%;object-fit:cover;object-position:30% 50%">
+                        <img src="<%= home.image_url %>" alt=""
+                            style="width:100%;height:100%;object-fit:cover;object-position:70% 50%">
+                    </div>
+                    <button
+                        style="position:absolute;bottom:16px;right:16px;background:#fff;border:1px solid #222;border-radius:8px;padding:8px 16px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer">
+                        ⊞ Show all photos
+                    </button>
+                </div>
+
+                <!-- Body: 2-column layout -->
+                <div style="display:grid;grid-template-columns:1fr 380px;gap:48px;margin-top:32px;align-items:start">
+
+                    <!-- LEFT COLUMN -->
+                    <div>
+
+                        <!-- Title -->
+                        <div style="border-bottom:1px solid #ddd;padding-bottom:24px">
+                            <h1 style="font-size:26px;font-weight:700;line-height:1.3">
+                                <%= home.house_name %>
+                            </h1>
+                            <p style="font-size:16px;color:#717171;margin-top:6px">📍 <%= home.location %>
+                            </p>
+                            <div style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:15px">
+                                <span style="display:flex;align-items:center;gap:4px;font-weight:600">
+                                    ⭐ <%= home.rating %>
+                                </span>
+                                <span style="color:#717171">·</span>
+                                <span style="text-decoration:underline;font-weight:600;cursor:pointer">42 reviews</span>
+                                <span style="color:#717171">·</span>
+                                <span style="text-decoration:underline;font-weight:600;cursor:pointer">Superhost</span>
+                                <span style="color:#717171">·</span>
+                                <span>
+                                    <%= home.category %>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Host -->
+                        <div
+                            style="display:flex;align-items:center;gap:16px;padding:24px 0;border-bottom:1px solid #ddd">
+                            <div
+                                style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#FF385C,#ff6b81);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;flex-shrink:0">
+                                R</div>
+                            <div>
+                                <div style="font-size:16px;font-weight:600">Hosted by Raj</div>
+                                <div style="font-size:14px;color:#717171;margin-top:2px">Superhost · 6 years hosting
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Amenities -->
+                        <div style="padding:24px 0;border-bottom:1px solid #ddd">
+                            <h2 style="font-size:22px;font-weight:700;margin-bottom:20px">What this place offers</h2>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                                <div style="display:flex;align-items:center;gap:14px;font-size:15px">📶 Fast wifi</div>
+                                <div style="display:flex;align-items:center;gap:14px;font-size:15px">🚗 Free parking
+                                </div>
+                                <div style="display:flex;align-items:center;gap:14px;font-size:15px">❄️ Air conditioning
+                                </div>
+                                <div style="display:flex;align-items:center;gap:14px;font-size:15px">🏡 Entire property
+                                </div>
+                                <div style="display:flex;align-items:center;gap:14px;font-size:15px">🛏️ Comfortable
+                                    beds</div>
+                                <div style="display:flex;align-items:center;gap:14px;font-size:15px">🍳 Full kitchen
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div style="padding:24px 0;border-bottom:1px solid #ddd">
+                            <h2 style="font-size:22px;font-weight:700;margin-bottom:16px">About this stay</h2>
+                            <p style="font-size:16px;color:#3d3d3d;line-height:1.8">
+                                <%= home.description %>
+                            </p>
+                        </div>
+
+                        <!-- Map Section
+                        <div style="padding:24px 0;border-bottom:1px solid #ddd">
+                            <h2 style="font-size:22px;font-weight:700;margin-bottom:16px">Where you'll be</h2>
+
+                            <div id="map" style="height:340px;border-radius:16px;overflow:hidden;z-index:0"></div>
+                            <p style="font-size:14px;color:#717171;margin-top:12px">📍 <%= home.location %> · Exact
+                                    address provided after booking</p>
+                        </div>
+
+                        <script>
+                            // Use coordinates stored in your home object, or geocode the location string
+                            const lat = <%= home.lat || 23.0225 %>;   // fallback: Ahmedabad
+                            const lng = <%= home.lng || 72.5714 %>;
+
+                            const map = L.map('map', { zoomControl: true, scrollWheelZoom: false }).setView([lat, lng], 13);
+
+                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                attribution: '© OpenStreetMap contributors'
+                            }).addTo(map);
+
+                            // Custom Airbnb-style circle marker
+                            L.circleMarker([lat, lng], {
+                                radius: 14,
+                                fillColor: '#FF385C',
+                                color: '#fff',
+                                weight: 3,
+                                fillOpacity: 1
+                            }).addTo(map);
+                        </script> -->
+
+                        <!-- RIGHT COLUMN: Booking Card -->
+                        <div>
+                            <div
+                                style="background:#fff;border:1px solid #ddd;border-radius:16px;padding:24px;position:sticky;top:24px">
+
+                                <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:4px">
+                                    <span style="font-size:22px;font-weight:700">₹<%= home.price %></span>
+                                    <span style="font-size:15px;color:#717171">/ night</span>
+                                </div>
+                                <div
+                                    style="display:flex;align-items:center;gap:4px;font-size:14px;font-weight:500;margin-bottom:20px">
+                                    ⭐ <%= home.rating %>
+                                        <span style="color:#717171">·</span>
+                                        <span style="color:#717171;text-decoration:underline;cursor:pointer">42
+                                            reviews</span>
+                                </div>
+
+                                <!-- Date pickers -->
+                                <div
+                                    style="display:grid;grid-template-columns:1fr 1fr;border:1px solid #222;border-radius:12px;overflow:hidden;margin-bottom:12px">
+                                    <div style="padding:12px 14px;border-right:1px solid #222;cursor:pointer">
+                                        <div
+                                            style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">
+                                            Check-in</div>
+                                        <div style="font-size:14px;color:#717171">Add date</div>
+                                    </div>
+                                    <div style="padding:12px 14px;cursor:pointer">
+                                        <div
+                                            style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">
+                                            Checkout</div>
+                                        <div style="font-size:14px;color:#717171">Add date</div>
+                                    </div>
+                                </div>
+
+                                <!-- Guests -->
+                                <div
+                                    style="border:1px solid #222;border-radius:12px;padding:12px 14px;margin-bottom:20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+                                    <div>
+                                        <div
+                                            style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px">
+                                            Guests</div>
+                                        <div style="font-size:14px;color:#222">1 guest</div>
+                                    </div>
+                                    <span>⌄</span>
+                                </div>
+
+                                <button
+                                    style="width:100%;background:linear-gradient(to right,#E61E4D,#D70466);color:#fff;border:none;border-radius:12px;padding:16px;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:16px">
+                                    Reserve
+                                </button>
+                                <p style="text-align:center;font-size:14px;color:#717171;margin-bottom:20px">You won't
+                                    be
+                                    charged yet</p>
+
+                                <!-- Price breakdown -->
+                                <div style="display:grid;gap:12px;border-top:1px solid #ddd;padding-top:16px">
+                                    <div
+                                        style="display:flex;justify-content:space-between;font-size:15px;color:#3d3d3d">
+                                        <span style="text-decoration:underline;cursor:pointer">₹<%= home.price %> × 5
+                                                nights</span>
+                                        <span>₹<%= home.price * 5 %></span>
+                                    </div>
+                                    <div
+                                        style="display:flex;justify-content:space-between;font-size:15px;color:#3d3d3d">
+                                        <span style="text-decoration:underline;cursor:pointer">Cleaning fee</span>
+                                        <span>₹850</span>
+                                    </div>
+                                    <div
+                                        style="display:flex;justify-content:space-between;font-size:15px;color:#3d3d3d">
+                                        <span style="text-decoration:underline;cursor:pointer">Service fee</span>
+                                        <span>₹1,200</span>
+                                    </div>
+                                    <div
+                                        style="display:flex;justify-content:space-between;font-size:15px;font-weight:700;color:#222;border-top:1px solid #ddd;padding-top:12px;margin-top:4px">
+                                        <span>Total before taxes</span>
+                                        <span>₹<%= (home.price * 5) + 850 + 1200 %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+            </main>
+            <!-- Back link -->
+            <a href="/home-list"
+                style="display:inline-flex;align-items:center;gap:6px;color:#222;font-size:14px;font-weight:600;text-decoration:underline;margin-top:32px; margin-left:32px; margin-bottom:32px">
+                ← Back to homes
+            </a>
+    </body>
+
+    </html>

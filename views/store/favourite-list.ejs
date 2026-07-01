@@ -1,0 +1,125 @@
+<%- include('../partials/head') %>
+    </head>
+
+    <body class="bg-[#f7f7f7] min-h-screen">
+
+        <%- include('../partials/Nav') %>
+
+            <main class="max-w-7xl mx-auto px-6 py-10">
+
+                <!-- Header -->
+                <div class="mb-10">
+                    <h1 class="text-4xl font-bold text-gray-900">Favourites ❤️</h1>
+                    <p class="text-gray-500 mt-2">
+                        <%= favourites.length %> saved stay<%= favourites.length !==1 ? 's' : '' %>
+                    </p>
+                </div>
+
+                <!-- Empty State -->
+                <% if (favourites.length===0) { %>
+                    <div class="flex flex-col items-center justify-center py-32 text-center">
+                        <div class="text-7xl mb-6">🏡</div>
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">No favourites yet</h2>
+                        <p class="text-gray-500 mb-8">Start exploring and save homes you love.</p>
+                        <a href="/home-list"
+                            class="bg-[#FF385C] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#e03150] transition">
+                            Explore Homes
+                        </a>
+                    </div>
+
+                    <% } else { %>
+
+                        <!-- Grid -->
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+                            <% favourites.forEach(house=> { %>
+
+                                <div
+                                    class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300">
+
+                                    <!-- Image -->
+                                    <div class="relative overflow-hidden">
+                                        <a href="/home-detail/<%= house.id %>">
+                                            <img src="<%= house.image_url %>" alt="<%= house.house_name %>"
+                                                class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+                                        </a>
+
+                                        <!-- Category Badge -->
+                                        <span
+                                            class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-gray-700 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+                                            <%= house.category %>
+                                        </span>
+
+                                        <!-- Remove from favourites -->
+                                        <form action="/favourites/delete/<%= house.id %>" method="POST" class="flex-1">
+                                            <input type="hidden" name="id" value="<%= house.id %>">
+                                            <button type="submit"
+                                                class="absolute top-3 right-3 flex items-center justify-center w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm shadow-md hover:scale-110 active:scale-95 transition-all duration-200"
+                                                title="Remove from Favourites">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="#FF385C"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#FF385C"
+                                                    class="w-5 h-5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <!-- Card Body -->
+                                    <div class="p-5">
+                                        <div class="flex justify-between items-start gap-2">
+                                            <h2 class="font-semibold text-gray-900 text-base leading-snug truncate">
+                                                <%= house.house_name %>
+                                            </h2>
+                                            <span
+                                                class="flex items-center gap-1 text-sm font-semibold text-gray-800 flex-shrink-0">
+                                                ⭐ <%= house.rating %>
+                                            </span>
+                                        </div>
+
+                                        <p class="text-gray-500 text-sm mt-1">📍 <%= house.location %>
+                                        </p>
+
+                                        <p class="text-gray-400 text-sm mt-3 line-clamp-2 leading-relaxed">
+                                            <%= house.description %>
+                                        </p>
+
+                                        <!-- Price + Actions -->
+                                        <div class="mt-5 pt-4 border-t border-gray-100">
+                                            <div class="flex items-baseline gap-1 mb-4">
+                                                <span class="text-2xl font-bold text-gray-900">₹<%= house.price %>
+                                                </span>
+                                                <span class="text-gray-500 text-sm">/ night</span>
+                                            </div>
+
+                                            <div class="flex gap-3">
+                                                <a href="/home-detail/<%= house.id %>"
+                                                    class="flex-1 text-center bg-[#FF385C] text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-[#e03150] transition">
+                                                    Book Now
+                                                </a>
+
+                                                <form action="/favourites/delete/<%= house.id %>" method="POST"
+                                                    class="flex-1">
+                                                    <input type="hidden" name="id" value="<%= house.id %>">
+                                                    <button type="submit"
+                                                        class="w-full border border-red-400 text-red-500 py-2.5 rounded-xl text-sm font-semibold hover:bg-red-50 transition">
+                                                        Remove
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <% }) %>
+
+                        </div>
+                        <% } %>
+
+            </main>
+
+    </body>
+
+    </html>
