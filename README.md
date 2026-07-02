@@ -1,6 +1,6 @@
 # Airbnb Clone
 
-A full-stack Airbnb clone built with **Node.js**, **Express**, **EJS**, and **Tailwind CSS**.
+A full-stack Airbnb clone built with **Node.js**, **Express**, **EJS**, **MySQL** and **Tailwind CSS**.
 
 ## Features
 

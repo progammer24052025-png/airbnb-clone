@@ -1,69 +1,42 @@
-//core Modules
-const fs = require('fs');
-const path = require('path');
-const rootDir = require('../utils/pathUtil');
-const Favourite = require('./favourite');
 
-const HomeDataPath = path.join(rootDir, 'data', 'homes.json')
+const db = require("../utils/databaseUtil");
 
 module.exports = class home {
-    constructor(house_name, location, description, price, image_url, rating, category, lat, lng) {
-        this.house_name = house_name;
+    constructor(houseName, location, description, price, imageUrl, rating, category) {
+        this.houseName = houseName;
         this.location = location;
         this.description = description;
         this.price = price;
-        this.image_url = image_url;
+        this.imageUrl = imageUrl;
         this.rating = rating;
         this.category = category;
-        this.lat = lat;
-        this.lng = lng;
 
     }
 
     save() {
-        home.fetchAll(RegisteredHomes => {
-
-            if (this.id) {// edit home case
-                console.log("edit case", this.id);
-                RegisteredHomes = RegisteredHomes.map(home =>
-                    home.id === this.id ? this : home
-                );
-
-
-            } else {// add home case
-                console.log("add case");
-                this.id = Math.random().toString();
-                RegisteredHomes.push(this);
-            }
-            fs.writeFile(HomeDataPath, JSON.stringify(RegisteredHomes), error => {
-                console.log("File Writing Concluded", error);
-            });
-        })
-
+        if (this.id) {
+            // UPDATE existing home
+            return db.execute(
+                'UPDATE homes SET house_name = ?, location = ?, description = ?, price = ?, image_url = ?, rating = ?, category = ? WHERE id = ?',
+                [this.houseName, this.location, this.description, this.price, this.imageUrl, this.rating, this.category, this.id]
+            );
+        } else {
+            // INSERT new home
+            return db.execute(
+                'INSERT INTO homes (house_name, location, description, price, image_url, rating, category) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [this.houseName, this.location, this.description, this.price, this.imageUrl, this.rating, this.category]
+            );
+        }
     }
-    static fetchAll(callback) {
-        fs.readFile(HomeDataPath, (error, data) => {
-            if (error) {
-                fs.writeFile(HomeDataPath, '[]', () => callback([]));
-            } else {
-                callback(JSON.parse(data));
-            }
-        });
+    static fetchAll() {
+        return db.execute('SELECT * FROM homes');
     }
-    static FindById(homeId, callback) {
-        this.fetchAll(homes => {
-            const homeFound = homes.find((home) => home.id === homeId);
-            callback(homeFound);
-        })
+    static FindById(homeId) {
+        return db.execute('SELECT * FROM homes WHERE id = ?', [homeId]);
     }
 
-    static DeleteById(homeId, callback) {
-        this.fetchAll(homes => {
-            homes = homes.filter(home => home.id !== homeId);
-            fs.writeFile(HomeDataPath, JSON.stringify(homes), error => {
-                if (error) return callback(error);
-                Favourite.DeleteById(homeId, callback);
-            });
-        })
+    static DeleteById(homeId) {
+        return db.execute('DELETE FROM homes WHERE id = ?', [homeId]);
     }
+
 }
